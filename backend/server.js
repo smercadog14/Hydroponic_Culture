@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { Router } = require("express");
 
 function server() {
   this.app = express();
@@ -11,13 +12,17 @@ function server() {
 
   this.middleware = () => {
     this.app.use(express.json());
-    this.app.use(cor());
+    this.app.use(cors());
   };
 
   this.router = (routes) => {
+    const router = new Router();
+
     routes.forEach((route) => {
-      this.app.use(route.path, route.controller);
+      console.log(route.path);
+      router.use(route.path, route.controller);
     });
+    this.app.use("/api", router);
   };
 
   this.listen = () => {

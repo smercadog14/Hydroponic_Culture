@@ -1,42 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 const Role = require("../../models/user/role");
 const Admin = require("../../middleware/admin");
 const Auth = require("../../middleware/auth");
 const UserAuth = require("../../middleware/userDB");
 const dataCompleted = require("../../middleware/validateData");
 const contract = require("../../contracts/user/role");
+const { role: repository } = require("../../repositories");
+const { role: controller } = require("../../controllers/index");
 
-router.post(
-  "/create",
-  Auth,
-  UserAuth,
-  Admin,
-  dataCompleted(contract.create),
-  async (req, res) => {
-    const roleExists = await Role.findOne({ name: req.body.name });
-    if (roleExists)
-      return res.status(400).send("Process failed: role already exists");
+router.post("/create", dataCompleted(contract.create), controller.create);
 
-    const role = new Role({
-      name: req.body.name,
-      description: req.body.description,
-      active: true,
-    });
 
-    const result = await role.save();
-    if (!result) return res.status(401).send("Failed to register role");
-    return res.status(200).send({ result });
-  }
-);
+
+
 
 router.get("/list/:name?", Auth, UserAuth, Admin, async (req, res) => {
-  const role = await Role.find({
-    name: new RegExp(req.params["name"], "i"),
-  });
-  // .populate()
-  // .exec();
+  const role = await repository.list(req.params.name);
+
   if (!role) return res.status(200).send("No roles were found.");
   return res.status(200).send({ role });
 });
@@ -48,18 +29,15 @@ router.put(
   Admin,
   dataCompleted(contract.update),
   async (req, res) => {
-    const validId = mongoose.Types.ObjectId.isValid(req.body._id);
+    const validId = await repository.validId(req.body._id);
+
     if (!validId) return res.status(401).send("Error: Invalid id");
 
-    role = await Role.findByIdAndUpdate(
-      req.body._id,
-      {
-        name: req.body.name,
-        description: req.body.description,
-        active: req.body.active,
-      },
-      { new: true }
-    );
+    const role = await repository.update(req.body._id, {
+      name: req.body.name,
+      description: req.body.description,
+      active: req.body.active,
+    });
 
     if (!role) return res.status(400).send("Error: Could not update role.");
     return res.status(200).send({ message: "Role updated successfully", role });
@@ -73,7 +51,7 @@ router.put(
   Admin,
   dataCompleted(contract.update),
   async (req, res) => {
-    let role = await Role.findByIdAndUpdate(req.body._id, {
+    let role = await repository.update(req.body._id, {
       name: req.body.name,
       description: req.body.description,
       active: false,
@@ -85,13 +63,13 @@ router.put(
 );
 
 router.delete("/:_id", Auth, UserAuth, Admin, async (req, res) => {
-  const validId = mongoose.Types.ObjectId.isValid(req.params._id);
+  const validId = repository.validId(req.params._id);
   if (!validId) return res.status(401).send("Process failed: Invalid id");
 
-  const roleDB = await Role.findById(req.params._id);
+  const roleDB = await repository.findById(req.params._id);
   if (!roleDB) return res.status(401).send("Role doesn't exist on db");
 
-  const role = await Role.findByIdAndDelete(req.params._id);
+  const role = await repository.erase(req.params._id);
   if (!role) return res.status(401).send("Failed to delete role");
   return res.status(200).send({ mensaje: "Role Deleted" });
 });

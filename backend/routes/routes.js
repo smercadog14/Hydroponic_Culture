@@ -10,16 +10,16 @@ const tank = require("./station/tank");
 const login = require("./user/login");
 
 const routes = [
-  { path: "/api/user/", controller: user },
-  { path: "/api/role/", controller: role },
-  { path: "/api/actuator/", controller: actuator },
-  { path: "/api/compount/", controller: compound },
-  { path: "/api/micro/", controller: micro },
-  { path: "/api/sensor/", controller: sensor },
-  { path: "/api/solution/", controller: solution },
-  { path: "/api/station/", controller: station },
-  { path: "/api/tank/", controller: tank },
-  { path: "/api/login/", controller: login },
+  { path: "/user/", controller: user },
+  { path: "/role/", controller: role },
+  // { path: "/actuator/", controller: actuator },
+  // { path: "/compound/", controller: compound },
+  // { path: "/micro/", controller: micro },
+  // { path: "/sensor/", controller: sensor },
+  // { path: "/solution/", controller: solution },
+  // { path: "/station/", controller: station },
+  // { path: "/tank/", controller: tank },
+  { path: "/login/", controller: login },
 ];
 
 module.exports = routes;

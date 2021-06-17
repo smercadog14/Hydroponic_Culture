@@ -9,15 +9,17 @@ const Auth = require("../../middleware/auth");
 const UserAuth = require("../../middleware/userDB");
 const dataCompleted = require("../../middleware/validateData");
 const contract = require("../../contracts/user/user");
+const repository = require("../../repositories/user");
 
 router.post(
   "/create",
-  Auth,
-  UserAuth,
-  Admin,
+  // Auth,
+  // UserAuth,
+  // Admin,
   dataCompleted(contract.create),
   async (req, res) => {
-    let user = await User.findOne({ email: req.body.email });
+    let user = await repository.findOneEmail({ email: req.body.email });
+
     if (user)
       return res
         .status(400)
@@ -25,21 +27,21 @@ router.post(
 
     const hash = await bcrypt.hash(req.body.password, 10);
 
-    const role = await Role.findOne({ name: "user" });
+    const role = await repository.findOne({ name: "user" });
     if (!role)
       return res.status(400).send("Process failed: No role was assigned");
 
-    user = new User({
-      avatar: req.body.avatar,
-      name: req.body.name,
-      password: hash,
-      email: req.body.email,
-      phone: req.body.phone,
-      roleId: role._id,
-      active: true,
-    });
-
     try {
+      await repository.create({
+        avatar: req.body.avatar,
+        name: req.body.name,
+        password: hash,
+        email: req.body.email,
+        phone: req.body.phone,
+        roleId: role._id,
+        active: true,
+      });
+      //mi muri +.+ +.+ +.+ rayito de la mañana tu sabes cuanto la quiero :V
       const result = await user.save();
       if (!result) return res.status(401).send("Failed to register user");
       const jwtToken = user.generateJWT();
@@ -104,6 +106,7 @@ router.put(
   Admin,
   dataCompleted(contract.update),
   async (req, res) => {
+    
     const hash = await bcrypt.hash(req.body.password, 10);
 
     const user = await User.findByIdAndUpdate(req.body._id, {
