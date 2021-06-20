@@ -1,37 +1,24 @@
-const Base = require("./Base");
-const { user } = require("../repositories");
+const BaseController = require("./Base");
+const { User: Service } = require("../services");
 
-class UserController extends Base {
+class UserController extends BaseController {
   constructor() {
-    super(user);
+    super(Service);
   }
 
-  async create(req, res) {
-    const user = await this.repository.findOneEmail({ email: req.body.email });
-
-    if (user)
-      return res
-        .status(400)
-        .send("Process failed: The user is already registered");
-
-    const hash = await bcrypt.hash(req.body.password, 10);
-
-    const role = await repository.findOne({ name: "user" });
-    if (!role)
-      return res.status(400).send("Process failed: No role was assigned");
-
-    req.body.password = hash;
-
+  async login(req, res) {
     try {
-      await repository.create(req.body);
+      const user = await User.findOne({ email: req.body.email });
+      if (!user) return res.status(400).send("Incorrect email or password");
 
-      const result = await user.save();
-      if (!result) return res.status(401).send("Failed to register user");
+      const hash = await bcrypt.compare(req.body.password, user.password);
+      if (!user.active || !hash)
+        return res.status(400).send("Incorrect email or password");
 
       const jwtToken = user.generateJWT();
-      res.status(200).send({ jwtToken });
+      return res.status(200).send({ jwtToken });
     } catch (e) {
-      return res.status(400).send("Failed to register user");
+      return res.status(400).send("Login error");
     }
   }
 }

@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "2c8d4f58-fc57-4c9f-98e7-67204d6f2147",
+		"name": "Role",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createRole",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n \r\n    \"name\":\"admin\",\r\n    \"description\":\"admin user\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/role/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"role",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listRole",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/roles/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"roles",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteRole",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n           \r\n            \"_id\": \"60ceb3e84511441da02f1a90\",           \r\n            \"description\": \"us user\"\r\n           \r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/roles/60ca67a71352504320edb94c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"roles",
+						"60ca67a71352504320edb94c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateRole",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"_id\": \"60ceb3e84511441da02f1a90\",\r\n     \"name\": \"ve\",\r\n            \"description\": \"us user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/roles/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"roles",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

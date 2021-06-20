@@ -1,13 +1,58 @@
 class BaseService {
-  constructor(repository) {
-    this.repository = repository;
+  constructor(Repository) {
+    this.repository = new Repository();
   }
 
-  validId(id) {
-    return Mongoose.Types.ObjectId.isValid(id);
+  async create(element, findCriteria = null) {
+    console.log("BaseService ~ element", element);
+    const alreadyExist = await this.repository.findOne(findCriteria || element);
+
+    if (alreadyExist) {
+      const error = new Error("Can not create Element 'cause already Exists");
+      error.status = 400;
+      throw error;
+    }
+
+    return await this.repository.create(element);
   }
 
+  async update(id, element) {
+    const result = await this.repository.update(id, element);
+    console.log("BaseService ~ result", result);
 
-  
+    if (!result) {
+      const error = new Error("Could not update");
+      error.status = 200;
+      throw error;
+    }
+    return result;
+  }
 
+  list(name) {
+    return this.repository.list(name);
+  }
+
+  async get(id) {
+    const element = await this.repository.findById(id);
+
+    if (!element) {
+      const error = new Error("This element does not exist");
+      error.status = 404;
+      throw error;
+    }
+  }
+
+  async remove(id) {
+    const removedItem = await this.repository.remove(id);
+
+    if (!removedItem) {
+      const error = new Error("Can not Remove Element");
+      error.status = 204;
+      throw error;
+    }
+
+    return removedItem;
+  }
 }
+
+module.exports = BaseService;

@@ -1,44 +1,61 @@
 class BaseController {
-  constructor(repository) {
-    this.repository = repository;
+  constructor(Service) {
+    this.service = new Service();
+    this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.list = this.list.bind(this);
+    this.getOne = this.getOne.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   async create(req, res) {
-    const existingRecord = await this.repository.findOne(req.body.name);
-
-    if (existingRecord)
-      return res.status(400).send("Process failed: entity already exists");
-
-    const result = await this.repository.create(req.body);
-
-    if (!result) return res.status(401).send("Failed to register role");
-    return res.status(200).send({ result });
-  }
-
-  async list(req, res) {
-    const list = await this.repository.list(req.params.name);
-    if (!list) return res.status(200).send("No data were found.");
-    return res.status(200).send({ results: list });
+    try {
+      const result = await this.service.create(req.body);
+      return res.status(201).json({ result });
+    } catch (error) {
+      console.log("BaseController ~ error", error);
+      return res.status(error.status || 500).json({ message: error.message });
+    }
   }
 
   async update(req, res) {
-    const validId = await repository.validId(req.body._id);
-    if (!validId) return res.status(401).send("Error: Invalid id");
+    try {
+      const results = await this.service.update(req.body.id, req.body);
+      console.log("BaseController ~ results", results);
 
-    const result = await repository.update(req.body);
-    if (!result) return res.status(400).send("Error: Could not update.");
-    return res.status(200).send({ message: "Updated successfully", role });
+      return res.status(202).json({ results });
+    } catch (error) {
+      console.log("BaseController ~ error", error);
+      return res.status(500).json({ message: error.message });
+    }
   }
 
-  async disable(req, res) {
-    const validId = await repository.validId(req.body._id);
-    if (!validId) return res.status(401).send("Error: Invalid id");
+  async list(req, res) {
+    try {
+      const results = await this.service.list(req.params.name);
+      return res.status(200).json({ results });
+    } catch (error) {
+      //error.status || 500
+      return res.status(500).json({ message: error.message });
+    }
+  }
 
-    let result = await repository.update(req.body);
+  async getOne(req, res) {
+    try {
+      const results = await this.service.get(req.params._id);
+      return res.status(200).json({ results });
+    } catch (error) {
+      return res.status(error.status || 500).json({ message: error.message });
+    }
+  }
 
-    if (!result)
-      return res.status(400).send("Process failed: Error delete Role");
-    return res.status(200).send({ role });
+  async remove(req, res) {
+    try {
+      const results = await this.service.remove(req.params._id);
+      return res.status(202).json({ results });
+    } catch (error) {
+      return res.status(404).json({ message: error.message });
+    }
   }
 }
 

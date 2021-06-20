@@ -1,11 +1,12 @@
 const BaseRepository = require("./Base");
+const Model = require("../models/user");
 
 class UserRepository extends BaseRepository {
-  findOneEmail(email) {
-    return this.Model.findOne({ email });
+  constructor() {
+    super(Model);
   }
 
-  getJwtToken(user) {
+  getToken(user) {
     return user.generateJWT();
   }
 }

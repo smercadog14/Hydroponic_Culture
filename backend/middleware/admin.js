@@ -1,4 +1,4 @@
-const Role = require("../models/user/role");
+const Role = require("../model/role");
 
 const admin = async (req, res, next) => {
   const role = await Role.findById(req.user.roleId);

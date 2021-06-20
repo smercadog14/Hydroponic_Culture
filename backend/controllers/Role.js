@@ -1,9 +1,9 @@
-const Base = require("./Base");
-const { role } = require("../repositories");
+const BaseController = require("./Base");
+const { Role: Service } = require("../services");
 
-class RoleController extends Base {
+class RoleController extends BaseController {
   constructor() {
-    super(role);
+    super(Service);
   }
 }
 

@@ -5,7 +5,9 @@ class BaseRepository {
     this.Model = Model;
   }
 
- 
+  validId(id) {
+    return Mongoose.Types.ObjectId.isValid(id);
+  }
 
   create(element) {
     const elementToStore = new this.Model(element);
@@ -19,24 +21,18 @@ class BaseRepository {
   }
 
   update(id, element) {
-    return this.Model.findByIdAndUpdate(id, element, { new: true });
-  }
-
-  disable(id, element) {
-    const elementToUpdate = new this.Model(element);
-    elementToUpdate.active = false;
-    return this.Model.findByIdAndUpdate(id, elementToUpdate, { new: true });
+    return this.Model.findByIdAndUpdate(element.id, element, { new: true });
   }
 
   findById(id) {
     return this.Model.findById(id);
   }
 
-  findOne(name) {
-    return this.Model.findOne({ name: name });
+  findOne(element) {
+    return this.Model.findOne(element);
   }
 
-  delete(id) {
+  remove(id) {
     return this.Model.findByIdAndDelete(id);
   }
 }

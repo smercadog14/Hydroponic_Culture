@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "f03ff809-5b3c-4f0c-b54f-f99532e1f7b2",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"avatar\":\"fotico\",\r\n    \"name\":\"shello\",\r\n    \"password\":\"1234\",\r\n    \"email\":\"adsaasd@correo.com\",\r\n    \"phone\":\"1234456\",\r\n    \"role\":\"60ceb2e8cb6fe10cc481afb8\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletUser",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/users/60ced0e1ec2b24349862dcda",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"users",
+						"60ced0e1ec2b24349862dcda"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"_id\": \"60ceccd9f441bf341c28a0e5\",\r\n    \"avatar\":\"fotico\",\r\n    \"name\":\"shello market\",\r\n    \"password\":\"1234\",\r\n    \"email\":\"adsaasd@correo.com\",\r\n    \"phone\":\"1234456\",\r\n    \"role\":\"60ceb2e8cb6fe10cc481afb5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

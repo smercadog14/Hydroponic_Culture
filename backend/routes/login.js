@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const User = require("../../models/user/user");
-const dataCompleted = require("../../middleware/validateData");
-const contract = require("../../contracts/user/login");
+const User = require("../models/user");
+const dataCompleted = require("../middleware/validateData");
+const contract = require("../contracts/user/login");
 
 router.post("/login", dataCompleted(contract.login), async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
