@@ -4,7 +4,6 @@ class BaseService {
   }
 
   async create(element, findCriteria = null) {
-    console.log("BaseService ~ element", element);
     const alreadyExist = await this.repository.findOne(findCriteria || element);
 
     if (alreadyExist) {
@@ -18,7 +17,6 @@ class BaseService {
 
   async update(id, element) {
     const result = await this.repository.update(id, element);
-    console.log("BaseService ~ result", result);
 
     if (!result) {
       const error = new Error("Could not update");
@@ -32,6 +30,10 @@ class BaseService {
     return this.repository.list(name);
   }
 
+  getAll(params) {
+    return this.repository.getAll(params);
+  }
+
   async get(id) {
     const element = await this.repository.findById(id);
 
@@ -40,6 +42,7 @@ class BaseService {
       error.status = 404;
       throw error;
     }
+    return element;
   }
 
   async remove(id) {

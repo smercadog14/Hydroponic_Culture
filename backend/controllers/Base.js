@@ -13,26 +13,23 @@ class BaseController {
       const result = await this.service.create(req.body);
       return res.status(201).json({ result });
     } catch (error) {
-      console.log("BaseController ~ error", error);
       return res.status(error.status || 500).json({ message: error.message });
     }
   }
 
   async update(req, res) {
     try {
-      const results = await this.service.update(req.body.id, req.body);
-      console.log("BaseController ~ results", results);
+      const results = await this.service.update(req.params.id, req.body);
 
       return res.status(202).json({ results });
     } catch (error) {
-      console.log("BaseController ~ error", error);
       return res.status(500).json({ message: error.message });
     }
   }
 
   async list(req, res) {
     try {
-      const results = await this.service.list(req.params.name);
+      const results = await this.service.getAll(req.query);
       return res.status(200).json({ results });
     } catch (error) {
       //error.status || 500
@@ -42,8 +39,8 @@ class BaseController {
 
   async getOne(req, res) {
     try {
-      const results = await this.service.get(req.params._id);
-      return res.status(200).json({ results });
+      const element = await this.service.get(req.params.id);
+      return res.status(200).json({ element });
     } catch (error) {
       return res.status(error.status || 500).json({ message: error.message });
     }
@@ -51,7 +48,7 @@ class BaseController {
 
   async remove(req, res) {
     try {
-      const results = await this.service.remove(req.params._id);
+      const results = await this.service.remove(req.params.id);
       return res.status(202).json({ results });
     } catch (error) {
       return res.status(404).json({ message: error.message });

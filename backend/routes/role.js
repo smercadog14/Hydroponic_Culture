@@ -6,9 +6,9 @@ const { Role: Service } = require("../services");
 const controller = new Controller(Service);
 
 router.get("/", controller.list);
-router.get("/:_id", controller.getOne);
+router.get("/:id", controller.getOne);
 router.post("/", controller.create);
 router.put("/", controller.update);
-router.delete("/:_id", controller.remove);
+router.delete("/:id", controller.remove);
 
 module.exports = router;

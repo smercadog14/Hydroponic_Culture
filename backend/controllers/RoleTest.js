@@ -40,9 +40,8 @@ function BaseControllers(Service) {
 
   async function remove(req, res) {
     try {
-      console.log("req.params", req.params);
 
-      const results = await service.remove(req.params._id);
+      const results = await service.remove(req.params.id);
 
       return res.status(202).json({ results });
     } catch (error) {

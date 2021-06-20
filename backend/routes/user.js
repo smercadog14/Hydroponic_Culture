@@ -4,10 +4,10 @@ const { User: Controller } = require("../controllers");
 
 const controller = new Controller();
 
-router.get("/:name?", controller.list);
-router.get("/:_id", controller.getOne);
+router.get("/", controller.list);
+router.get("/:id", controller.getOne);
 router.post("/", controller.create);
-router.put("/", controller.update);
-router.delete("/:_id", controller.remove);
+router.put("/:id", controller.update);
+router.delete("/:id", controller.remove);
 
 module.exports = router;

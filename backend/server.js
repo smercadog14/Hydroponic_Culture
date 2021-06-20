@@ -19,7 +19,6 @@ function server() {
     const router = new Router();
 
     routes.forEach((route) => {
-      console.log(route.path);
       router.use(route.path, route.controller);
     });
     this.app.use("/api", router);

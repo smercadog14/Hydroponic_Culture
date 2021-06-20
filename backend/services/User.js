@@ -24,9 +24,10 @@ class UserService extends BaseService {
     const encryptedPassword = await bcrypt.hash(element.password, 10);
 
     const findCriteria = { email: element.email };
-    const toSAVE = { ...element, password: encryptedPassword };
-
-    const createdUser = await super.create(toSAVE, findCriteria);
+    const createdUser = await super.create(
+      { ...element, password: encryptedPassword },
+      findCriteria
+    );
 
     return createdUser.generateJWT();
   }
@@ -34,11 +35,19 @@ class UserService extends BaseService {
   async update(id, element) {
     const encryptedPassword = await bcrypt.hash(element.password, 10);
 
-    const toSAVE = { ...element, password: encryptedPassword };
-
-    const updatedUser = await super.update(id, toSAVE);
-
+    const updatedUser = await super.update(id, {
+      ...element,
+      password: encryptedPassword,
+    });
     return updatedUser;
+  }
+
+  getAll(params = {}) {
+    if (params.name) {
+      return this.repository.list(params.name);
+    }
+
+    return super.getAll(params);
   }
 }
 

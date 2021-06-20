@@ -20,8 +20,12 @@ class BaseRepository {
     });
   }
 
+  getAll(params = {}) {
+    return this.Model.find(params);
+  }
+
   update(id, element) {
-    return this.Model.findByIdAndUpdate(element.id, element, { new: true });
+    return this.Model.findByIdAndUpdate(id, element, { new: true });
   }
 
   findById(id) {
