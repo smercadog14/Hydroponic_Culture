@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { User: Controller } = require("../controllers");
+const contract = require("../contracts/user");
+const dataCompleted = require("../middleware/validateData");
 
 const controller = new Controller();
 

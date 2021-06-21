@@ -33,12 +33,20 @@ class UserService extends BaseService {
   }
 
   async update(id, element) {
-    const encryptedPassword = await bcrypt.hash(element.password, 10);
+    let updatedUser;
 
-    const updatedUser = await super.update(id, {
-      ...element,
-      password: encryptedPassword,
-    });
+    if (!element.password) {
+      updatedUser = await super.update(id, {
+        ...element,
+      });
+    } else {
+      const encryptedPassword = await bcrypt.hash(element.password, 10);
+
+      updatedUser = await super.update(id, {
+        ...element,
+        password: encryptedPassword,
+      });
+    }
     return updatedUser;
   }
 

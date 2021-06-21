@@ -15,8 +15,9 @@ class BaseRepository {
   }
 
   list(name) {
+    console.log("BaseRepository ~ name", name);
     return this.Model.find({
-      name: new RegExp(name, "i"),
+      name: new RegExp(String(name), "i"),
     });
   }
 

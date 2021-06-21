@@ -20,6 +20,7 @@ class BaseController {
   async update(req, res) {
     try {
       const results = await this.service.update(req.params.id, req.body);
+      console.log("BaseController ~ results", results);
 
       return res.status(202).json({ results });
     } catch (error) {
@@ -28,11 +29,16 @@ class BaseController {
   }
 
   async list(req, res) {
+    let results;
     try {
-      const results = await this.service.getAll(req.query);
+      if (req.query.name) {
+        results = await this.service.list(req.query.name);
+      } else {
+        results = await this.service.getAll(req.query);
+      }
+
       return res.status(200).json({ results });
     } catch (error) {
-      //error.status || 500
       return res.status(500).json({ message: error.message });
     }
   }
